@@ -1,0 +1,17 @@
+{
+  "name": "dumbways-task",
+  "version": "1.0.0",
+  "description": "This is my first personal website with js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Personal-web"
+  ],
+  "author": "bagusarya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
