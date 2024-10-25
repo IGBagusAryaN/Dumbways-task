@@ -3,7 +3,6 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    
     margin-inline: 80px;
     padding: 30px 20px;
 }
@@ -11,11 +10,16 @@
 .container-project h2 {
     margin-block: 30px;
 }
+
 .project{
     display: flex;
     justify-content: center;
     align-items: start;
     gap: 30px;
+}
+
+.project .img-project{
+    width: 550px;
 }
 
 .mini-desc{
@@ -47,3 +51,41 @@
 .desc-project div{
     font-size: 12px;
 }
+
+@media only screen and (max-width: 900px) {
+    .container-project{
+        width: 100%;
+        margin-left: 0;
+    }
+    .project{
+        flex-direction: column;
+        width: 100%;
+    }    
+
+    .project .img-project{
+        width: 100%;
+    }
+  }
+  
+@media only screen and (max-width: 550px) {
+    .container-project{
+        width: 100%;
+        margin-left: 0;
+    }
+    .project{
+        flex-direction: column;
+        width: 100%;
+    }    
+
+    .project .img-project{
+        width: 100%;
+    }
+
+    h4{
+        font-size: 12px;
+    }
+
+    .desc-project div{
+        font-size: 11px;
+    }
+  }

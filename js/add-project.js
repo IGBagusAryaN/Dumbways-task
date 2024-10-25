@@ -65,9 +65,9 @@ function renderBlog() {
             <div class="img-project">
                 <img src=${dataBlog[index].image} alt="" >
             </div>
-            <div class="title-project">${dataBlog[index].title}</div>
+            <a  href="./blog-detail/blog-detail1.html" class="title-project">${dataBlog[index].title}</a>
             <div class="duration-project">Duration : ${dataBlog[index].months} Bulan, ${dataBlog[index].days} Hari
-            <div class="post-time-project">${getDistanceTime(dataBlog[index].postAt)}</div>
+            <div class="post-time-project">${getDistanceTime(dataBlog[index].postAt)} - ${getFullTime(dataBlog[index].postAt)}</div>
             <div class="mini-desc-project">${dataBlog[index].description}</div>
             <div class="tech-project">
                 ${dataBlog[index].checkHtml}
@@ -169,7 +169,7 @@ function getFullTime(time) {
 
   
   }
-  setInterval(function () {
-    renderBlog();
-  }, 100000);
+  // setInterval(function () {
+  //   renderBlog();
+  // }, 10000);
  
