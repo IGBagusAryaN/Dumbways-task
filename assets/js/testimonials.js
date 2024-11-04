@@ -1,6 +1,6 @@
 async function getAllTestimonials() {
     try{
-        let testimonials = await fetch("https://api.npoint.io/932630d755e4bf3bbf6f");
+        let testimonials = await fetch("https://api.npoint.io/ffeb303ede7c155101ac");
         testimonials = await testimonials.json()
 
         const testimonialHtml= await testimonials.map((item)=>{
@@ -24,7 +24,7 @@ async function getAllTestimonials() {
 async function getFilteredTestimonials(rating) {
   try {
     let testimonials = await fetch(
-      "https://api.npoint.io/932630d755e4bf3bbf6f"
+      "https://api.npoint.io/ffeb303ede7c155101ac"
     );
     testimonials = await testimonials.json();
 
@@ -53,3 +53,4 @@ async function getFilteredTestimonials(rating) {
 }
 
 getAllTestimonials();
+

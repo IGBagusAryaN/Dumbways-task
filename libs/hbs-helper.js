@@ -1,19 +1,5 @@
 // helpers.js
 const hbs = require("hbs");
-// const moment = require("moment");
-
-// hbs.registerHelper("get_full_time", (date) => {
-//   if (!date) {
-//     return "Invalid date";
-//   }
-
-//   const dateObj = moment(date);
-//   if (!dateObj.isValid()) {
-//     return "Invalid date";
-//   }
-
-//   return dateObj.format("DD MMM YYYY HH:mm [WIB]");
-// });
 
 hbs.registerHelper("get_project_duration", (start, end) => {
   if (!start || !end) return "Tanggal tidak valid";
@@ -35,39 +21,6 @@ hbs.registerHelper("get_project_duration", (start, end) => {
   return result.trim() || "0 hari";
 });
 
-
-// hbs.registerHelper("get_full_time", (date) => {
-//   if (!date) {
-//     return "Invalid date";
-//   }
-
-//   const dateObj = new Date(date);
-//   if (isNaN(dateObj.getTime())) {
-//     return "Invalid date";
-//   }
-
-//   const months = [
-//     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-//     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-//   ];
-
-//   const tanggal = dateObj.getDate();
-//   const bulan = months[dateObj.getMonth()];
-//   const tahun = dateObj.getFullYear();
-
-//   let jam = dateObj.getHours();
-//   let menit = dateObj.getMinutes();
-
-//   if (jam < 10) {
-//     jam = "0" + jam;
-//   }
-
-//   if (menit < 10) {
-//     menit = "0" + menit;
-//   }
-
-//   return `${tanggal} ${bulan} ${tahun} ${jam}:${menit} WIB`;
-// });
 
 hbs.registerHelper("get_distance_time", (timePost) => {
   console.log("Type of timePost:", typeof timePost);
@@ -110,10 +63,10 @@ hbs.registerHelper("get_distance_time", (timePost) => {
 
 hbs.registerHelper('techIcon', function (techName) {
   const icons = {
-      html: '<img class="img-icon" src="../assets/svg/html5.svg" >',
-      css: '<img class="img-icon" src="../assets/svg/css3.svg" width="17">',
-      react: '<img class="img-icon" src="../assets/svg/reactjs.svg">',
-      javascript: '<img class="img-icon" src="../assets/svg/javascript.svg">',
+      html: '<img class="img-icon" src="../assets/svg/html5.svg" width="22">',
+      css: '<img class="img-icon" src="../assets/svg/css3.svg" width="22">',
+      react: '<img class="img-icon" src="../assets/svg/reactjs.svg"width="22">',
+      javascript: '<img class="img-icon" src="../assets/svg/javascript.svg"width="22">',
   };
   return new hbs.SafeString(icons[techName] || "");
 });

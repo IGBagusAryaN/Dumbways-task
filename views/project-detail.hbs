@@ -44,12 +44,12 @@
         </div>
       </nav>  
 
-      <section>
+      <section style="background-color: white;">
         <div class="container mx-lg-5 px-lg-5">
-            <h2 class="text-center fw-bold my-5">{{project.name}}</h2>
+            <h2 class="text-center fw-bold py-5">{{project.name}}</h2>
             <div class="row justify-content-center">
-                <div class="col-lg-8 col-sm-12 mb-5">
-                    <img class="img-fluid border-none" src="{{project.image}}" alt="" width="520" >
+                <div class="col-lg-8 col-sm-12 mb-5 text-center">
+                    <img class="border-none" src="{{project.image}}" alt="" width="420" >
                 </div>            
                 <div class="col-lg-4 col-sm-12">
                     <div class="row">
@@ -57,10 +57,10 @@
                             <h3 class="fw-bold">Duration</h3>
                             <div class="mb-4">
                                 <div>
-                                    <img src="../assets/svg/calendar.svg" alt=""> 12 Des 2022 - 25 Des 2022
+                                    <img src="../assets/svg/calendar.svg" alt=""> {{project.start_date}} - {{project.end_date}}
                                 </div>
                                 <div>
-                                    <img src="../assets/svg/time.svg" alt=""> 1 Bulan
+                                    <img src="../assets/svg/time.svg" alt=""> {{get_project_duration project.start_date project.end_date}}
                                 </div>
                             </div>
                         </div>                       
@@ -68,18 +68,18 @@
                             <h3 class="fw-bold">Technologies</h3>
                             <div class="row">
                                 <div class="col-6">
-                                    {{#each this.technologies}}
-                      {{{techIcon this}}}
-                    {{/each}}
+                                   {{#each project.technologies}}
+                                      {{{techIcon this}}} <!-- Gunakan triple curly braces untuk merender HTML -->
+                                  {{/each}}
                                 </div>
                             </div>
                         </div>
+                         <div class="mt-4 desc-project">
+                            <h3 class="fw-bold">Description</h3>
+                            <h6 class="mb-4">{{project.description}}</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="mt-4 desc-project">
-                <h4 class="mb-4">{{project.description}}</h4>
-                
             </div>
         </div>
     </section>

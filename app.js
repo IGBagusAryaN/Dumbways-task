@@ -65,7 +65,7 @@ async function projectPost(req, res) {
 
     const query = `
         INSERT INTO tb_projects (name, description, image, technologies, start_date, end_date) 
-        VALUES ('${title}', '${desc}', 'https://i.namu.wiki/i/QPnRfQqdbrtD7DyUd5FFhdQs43lrN55S58tiNP9ghjuj5KwEEKAamZk20ch3uyWMK3wQg8M4KtvyfDMh80kdHg.webp', '${formattedTechnologies}', '${start_date}', '${end_date}')
+        VALUES ('${title}', '${desc}', 'https://images8.alphacoders.com/137/thumb-1920-1374496.png', '${formattedTechnologies}', '${start_date}', '${end_date}')
     `;
         await sequelize.query(query, {
             type: QueryTypes.INSERT
@@ -114,30 +114,35 @@ async function updateProject(req, res) {
         res.redirect("/");
     }
 }
+
 async function updateProjectPost(req, res) {
     const { id } = req.params;
-    const { title, desc, start_date, end_date, technologies } = req.body;
+    const { title, desc, technologies, start_date, end_date } = req.body;
 
+    // Format technologies into PostgreSQL array format
+    const techArray = Array.isArray(technologies)
+        ? technologies
+        : typeof technologies === "string"
+        ? technologies.split(',').map(tech => tech.trim())
+        : [];
+    const formattedTechnologies = `{${techArray.join(',')}}`;
+
+    // Construct the update query with string interpolation
     const query = `
-        UPDATE tb_projects 
-        SET name = $title, 
-            description = $desc, 
-            start_date = $start_date, 
-            end_date = $end_date, 
-            technologies = $technologies
-        WHERE id = $id
+        UPDATE tb_projects
+        SET name = '${title}', 
+            description = '${desc}', 
+            technologies = '${formattedTechnologies}', 
+            start_date = '${start_date}', 
+            end_date = '${end_date}'
+        WHERE id = '${id}'
     `;
-        await sequelize.query(query, {
-            type: QueryTypes.UPDATE,
-            bind: { title, desc, start_date, end_date, technologies, id }
-        });
 
+        await sequelize.query(query, {
+            type: QueryTypes.UPDATE
+        });
         res.redirect("/");
 }
-
-
-
-
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

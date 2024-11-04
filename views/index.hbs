@@ -85,12 +85,7 @@
                   <a href="/project-detail/{{id}}" class="card-title text-decoration-none name-project">
                     <h5 class="fw-bold">{{name}}</h5>
                   </a>
-                  <div class="duration-project">{{get_project_duration start_date end_date}}</div>
-{{#each project}}
-
-    <div class="post-time-project">{{get_distance_time project.start_date}}</div>
-{{/each}}
-
+                  <div class="duration-project">Duration: {{get_project_duration start_date end_date}}</div>
                   <div>
                     {{#each this.technologies}}
                       {{{techIcon this}}}
