@@ -56,11 +56,11 @@
                 <div class="mb-3 row">
                     <div class="start-date col-6">
                         <label for="input-start-date" class="form-label fw-bold">Start Date</label>
-                        <input type="date" class="form-control" id="input-start-date" name="startDate" >
+                        <input type="date" class="form-control" id="input-start-date" name="start_date" >
                     </div>
                     <div class="end-date col-6">
                         <label for="input-end-date" class="form-label fw-bold">End Date</label>
-                        <input type="date" class="form-control" id="input-end-date" name="endDate">
+                        <input type="date" class="form-control" id="input-end-date" name="end_date">
                     </div>
                 </div>
                 <div class="mb-3">
@@ -71,19 +71,19 @@
                 <div class="mb-3 form-check">
                     <div class="checkbox-group row">
                         <div class="col-6">
-                            <input type="checkbox" name="option1" value="Next JS" id="input-checkbox-html" class="form-check-input">
+                            <input type="checkbox" name="technologies" value="html" id="input-checkbox-html" class="form-check-input">
                             <label for="input-checkbox-html" class="form-check-label ">HTML</label>
                         </div>
                         <div class="col-6">
-                            <input type="checkbox" name="option2" value="React JS" id="input-checkbox-css" class="form-check-input">
+                            <input type="checkbox" name="technologies" value="css" id="input-checkbox-css" class="form-check-input">
                             <label for="input-checkbox-css" class="form-check-label">CSS</label>
                         </div>
                         <div class="col-6">
-                            <input type="checkbox" name="option3" value="Node JS" id="input-checkbox-rjs" class="form-check-input">
+                            <input type="checkbox" name="technologies" value="react" id="input-checkbox-rjs" class="form-check-input">
                             <label for="input-checkbox-rjs" class="form-check-label">React JS</label>
                         </div> 
                         <div class="col-6">
-                            <input type="checkbox" name="option4" value="TypeScript" id="input-checkbox-js" class="form-check-input">
+                            <input type="checkbox" name="technologies" value="javascript" id="input-checkbox-js" class="form-check-input">
                             <label for="input-checkbox-js" class="form-check-label">JavaScript</label>
                         </div>
                     </div>
@@ -100,42 +100,6 @@
             </form>
         </div>
     </div>
-    
-      <hr class="line" />
-      <div id="contents" class="blog-list">
-        {{#each projects}}
-          <div class="blog-list-item">
-            <div class="blog-image">
-              <img src="{{image}}" alt="" />
-            </div>
-            <div class="blog-content">
-              <div
-                class="btn-group"
-                style="display: flex; justify-content: flex-end"
-              >
-                <a href="/edit-blog/{{@index}}" class="btn-edit">Edit Post</a>
-                <form method="post" action="/delete-blog/{{@index}}">
-                  <button type="submit" class="btn-post">Delete Post</button>
-                </form>
-              </div>
-              <h1>
-                <a href="blog-detail.html" target="_blank">{{title}}</a>
-              </h1>
-              <div class="detail-blog-content">
-                {{get_full_time createdAt}}
-                |
-                {{author}}
-              </div>
-              <p>
-                {{content}}
-              </p>
-              <p>
-                {{get_distance_time createdAt}}
-              </p>
-            </div>
-          </div>
-        {{/each}}
-      </div>
     </div>
 
     {{!-- <script src="../assets/js/add-project.js"></script> --}}

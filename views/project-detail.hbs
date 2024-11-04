@@ -5,15 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project detail</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/blog-detail.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body style="background-color: #E2E6EA;">
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container">
           <a class="navbar-brand" href="#">
-            <img src="../assets/images/png/logo.png" width="40"/>
+            <img src="../assets/png/logo.png" width="40"/>
           </a>
           <button
             class="navbar-toggler"
@@ -47,10 +46,10 @@
 
       <section>
         <div class="container mx-lg-5 px-lg-5">
-            <h2 class="text-center fw-bold my-5">{{title}}</h2>
+            <h2 class="text-center fw-bold my-5">{{project.name}}</h2>
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-sm-12 mb-5">
-                    <img class="img-fluid border-none" src="../assets/images/png/project.png" alt="" width="580" >
+                    <img class="img-fluid border-none" src="{{project.image}}" alt="" width="520" >
                 </div>            
                 <div class="col-lg-4 col-sm-12">
                     <div class="row">
@@ -58,10 +57,10 @@
                             <h3 class="fw-bold">Duration</h3>
                             <div class="mb-4">
                                 <div>
-                                    <img src="../assets/images/svg/calendar.svg" alt=""> 12 Des 2022 - 25 Des 2022
+                                    <img src="../assets/svg/calendar.svg" alt=""> 12 Des 2022 - 25 Des 2022
                                 </div>
                                 <div>
-                                    <img src="../assets/images/svg/time.svg" alt=""> 1 Bulan
+                                    <img src="../assets/svg/time.svg" alt=""> 1 Bulan
                                 </div>
                             </div>
                         </div>                       
@@ -69,13 +68,9 @@
                             <h3 class="fw-bold">Technologies</h3>
                             <div class="row">
                                 <div class="col-6">
-                                    <img src="../assets/images/svg/javascript.svg" alt=""> Javascript
-                                </div>
-                                <div class="col-6">
-                                    <img src="../assets/images/svg/bootstrap.svg" alt=""> Bootstraps
-                                </div>
-                                <div class="col-6">
-                                    <img src="../assets/images/svg/reactjs.svg" alt=""> React JS
+                                    {{#each this.technologies}}
+                      {{{techIcon this}}}
+                    {{/each}}
                                 </div>
                             </div>
                         </div>
@@ -83,7 +78,7 @@
                 </div>
             </div>
             <div class="mt-4 desc-project">
-                <h4 class="mb-4">{{desc}}</h4>
+                <h4 class="mb-4">{{project.description}}</h4>
                 
             </div>
         </div>

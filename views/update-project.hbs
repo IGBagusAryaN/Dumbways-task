@@ -31,11 +31,11 @@
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item text-center">
-                <a class="nav-link "aria-current="page" href="testimonial">Testimonial</a>
+                <a class="nav-link "aria-current="page" href="/testimonial">Testimonial</a>
               </li>
             </ul>
             <div class="text-center ms-4">
-              <a href="contact" class="btn bg-btn text-white px-3">Contact Me</a>
+              <a href="/contact" class="btn bg-btn text-white px-3">Contact Me</a>
             </div>
           </div>
         </div>
@@ -47,41 +47,41 @@
                 <h2 class="mb-4 text-center fw-bold">Update Project</h2>
                 <div class="mb-3 ">
                     <label for="input-project-name" class="form-label fw-bold">Name Project</label>
-                    <input name="inputProjectName" type="text" class="form-control" id="input-project-name" placeholder="E-Commerce" value="{{project.title}}">
+                    <input name="title" type="text" class="form-control" id="input-project-name" placeholder="E-Commerce" value="{{project.title}}">
 
                 </div>
                 <div class="mb-3 row">
                     <div class="start-date col-6">
                         <label for="input-start-date" class="form-label fw-bold">Start Date</label>
-                        <input name="inputStartDate" type="date" class="form-control" id="input-start-date" required>
+                        <input name="start_date" type="date" class="form-control" id="input-start-date" required>
                     </div>
                     <div class="end-date col-6">
                         <label for="input-end-date" class="form-label fw-bold">End Date</label>
-                        <input name="inputEndDate" type="date" class="form-control" id="input-end-date" required>
+                        <input name="end_date" type="date" class="form-control" id="input-end-date" required>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="input-project-desc" class="form-label fw-bold">Deskripsi</label>
-                    <textarea name="inputDesc" class="form-control" id="input-project-desc" cols="30" rows="5" placeholder="Describe your project..." required>{{project.desc}}</textarea>
+                    <textarea name="desc" class="form-control" id="input-project-desc" cols="30" rows="5" placeholder="Describe your project..." required>{{project.desc}}</textarea>
                 </div>
                 <label class="form-label fw-bold">Technology</label>
                 <div class="mb-3 form-check">
                     <div class="checkbox-group row">
                         <div class="col-6">
-                            <input type="checkbox" name="option1" value="Next JS" id="input-checkbox-html" class="form-check-input">
-                            <label name="inputCheckboxHtml" for="input-checkbox-html" class="form-check-label ">HTML</label>
+                            <input type="checkbox" name="technologies" value="html" id="input-checkbox-html" class="form-check-input">
+                            <label for="input-checkbox-html" class="form-check-label ">HTML</label>
                         </div>
                         <div class="col-6">
-                            <input type="checkbox" name="option2" value="React JS" id="input-checkbox-css" class="form-check-input">
-                            <label name="inputCheckboxCss" for="input-checkbox-css" class="form-check-label">CSS</label>
+                            <input type="checkbox" name="technologies" value="css" id="input-checkbox-css" class="form-check-input">
+                            <label for="input-checkbox-css" class="form-check-label">CSS</label>
                         </div>
                         <div class="col-6">
-                            <input type="checkbox" name="option3" value="Node JS" id="input-checkbox-rjs" class="form-check-input">
-                            <label name="inputCheckboxReact" for="input-checkbox-rjs" class="form-check-label">React JS</label>
+                            <input type="checkbox" name="technologies" value="react" id="input-checkbox-rjs" class="form-check-input">
+                            <label for="input-checkbox-rjs" class="form-check-label">React JS</label>
                         </div> 
                         <div class="col-6">
-                            <input type="checkbox" name="option4" value="TypeScript" id="input-checkbox-js" class="form-check-input">
-                            <label name="inputCheckboxJs" for="input-checkbox-js" class="form-check-label">JavaScript</label>
+                            <input type="checkbox" name="technologies" value="javascript" id="input-checkbox-js" class="form-check-input">
+                            <label for="input-checkbox-js" class="form-check-label">JavaScript</label>
                         </div>
                     </div>
                 </div>

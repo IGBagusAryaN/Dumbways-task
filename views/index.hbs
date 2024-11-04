@@ -82,18 +82,27 @@
               <div class="card mb-5 shadow-sm p-3 rounded-3">
                 <img src="{{image}}" class="img-fluid rounded-3 object-fit-cover" alt="">
                 <div class="card-body">
-                  <a href="project-detail/project-detail1.html" class="card-title text-decoration-none name-project">
+                  <a href="/project-detail/{{id}}" class="card-title text-decoration-none name-project">
                     <h5 class="fw-bold">{{name}}</h5>
                   </a>
-                  <div class="duration-project">{{get_distance_time createdAt}}</div>
-                  <div class="post-time-project">{{get_full_time createdAt}}</div>
+                  <div class="duration-project">{{get_project_duration start_date end_date}}</div>
+{{#each project}}
+
+    <div class="post-time-project">{{get_distance_time project.start_date}}</div>
+{{/each}}
+
+                  <div>
+                    {{#each this.technologies}}
+                      {{{techIcon this}}}
+                    {{/each}}
+                  </div>
                   <div class="card-text mt-3 ">
                     <p class="desc">{{description}}</p> 
                   </div>
                   <div class="button-project d-flex gap-2">
-                    <a href="/update-project/{{id}}" class="btn bg-btn rounded-4 text-white px-3">Edit</a>
-                    <form method="post" action="/delete-project/{{id}}">
-                      <button type="submit" class="btn-post">Delete Post</button>
+                    <a href="/update-project/{{id}}" class="btn bg-btn rounded-2 text-white px-3">Edit</a>
+                    <form method="post" action="/delete-project/{{id}}" style="width:100%">
+                      <button type="submit" class="btn bg-btn rounded-2 text-white px-3">Delete Post</button>
                     </form>
                   </div>
                 </div>
