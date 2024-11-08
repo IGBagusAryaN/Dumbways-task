@@ -9,6 +9,13 @@
     background-color: #E2E6EA;
   }
 
+  .navbar {
+    position: fixed;
+    z-index: 99;
+    width: 100%;
+    top: 0;
+  }
+
   h2{
     font-size: 24px;
   }
@@ -28,6 +35,9 @@
   .active {
     color: orangered !important;
   }
+  .auth-active {
+    font-weight: bold !important;
+  }
 
   .btn-active {
     background-color: orangered !important;
@@ -36,6 +46,7 @@
   .card-profile{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    margin-top: 65px;
   }
 
   .desc{
@@ -142,9 +153,49 @@
     filter: drop-shadow(4px 2px 6px rgba(0, 0, 0, 0.3));
   }
 
+  @media (min-width: 768px) and (max-width: 1023px){
+    .container-form {
+      width: 80%; /* Sesuaikan persentase sesuai kebutuhan */
+    }
+  
+    .profile-testimonial {
+      height: 300px !important; /* Sesuaikan tinggi sesuai kebutuhan */
+    }
+    
+    .container-auth{
+      flex-direction: column;
+    }
 
+    .login-register-links {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
 
-  @media only screen and (max-width: 550px) {
+    .btn-nav-res{
+      width: 100%;
+      border: 1px solid #111727 !important;
+      margin: 0 !important;
+    }
+
+    .btn-nav-res:hover{
+      background-color: orangered !important;
+      color: #ffff !important;
+    }
+
+    .user {
+      display: none;
+    }
+
+    .btn-logout {
+      width: 100% !important;
+      margin-bottom: 2px;
+      border-radius: 7px ;
+    }
+  }
+
+  @media only screen and (min-width: 0px) and (max-width: 768px){
     .container-form{
       width: 100%;
     }
@@ -152,4 +203,40 @@
     .profile-testimonial{
       height: 250px !important;
     }
+
+    .container-auth{
+      flex-direction: column;
+    }
+
+    .login-register-links {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+  
+
+    .btn-nav-res{
+      width: 100%;
+      border: 1px solid #111727 !important;
+      margin: 0 !important;
+    }
+
+    .btn-nav-res:hover{
+      background-color: orangered !important;
+      color: #ffff !important;
+    }
+
+    .user {
+      display: none;
+    }
+
+    .btn-logout {
+      width: 100% !important;
+      margin-bottom: 2px;
+      border-radius: 7px ;
+    }
+
+
     }

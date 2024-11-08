@@ -26,32 +26,52 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item text-center">
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
+
+              {{#if user}}
               <li class="nav-item text-center">
                 <a class="nav-link  "aria-current="page" href="/project">Add Project</a>
               </li>
+              {{/if}}
               <li class="nav-item text-center">
                 <a class="nav-link "aria-current="page" href="/testimonial">Testimonial</a>
               </li>
             </ul>
-            <div class="text-center ms-4">
-              <a href="/contact" class="btn bg-btn text-white px-3">Contact Me</a>
+            <div class="container-auth ms-auto d-flex justify-content-center align-items-center">
+                {{#if user}}
+                    <div class="me-3 user">Welcome, {{user.name}}</div>
+                    <form action="/logout" method="POST" class="btn-logout me-3">
+                        <button type="submit" class="btn-logout btn btn-danger btn-sm">Logout</button>
+                    </form>
+                {{else}}
+                    <div class="login-register-links">
+                        <a href="/login" class="btn-nav-res btn text-decoration-none text-dark">Login</a>
+                        <a href="/register" class="btn-nav-res btn text-decoration-none text-dark me-4">Register</a>
+                    </div>
+                {{/if}}
+                <a href="/contact" class="btn-nav-res btn bg-btn text-white px-3">Contact Me</a>
             </div>
-            
           </div>
         </div>
       </nav>
+      
+      {{#if messages.success}}
+      <div class="alert alert-success alert-dismissible fade show" role="alert" style="top:60px; z-index:99;">
+        {{messages.success}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {{/if}}
   
-      <section class="container mt-3 mb-5 py-4 px-5 rounded-4 card-profile">
+      <section class="container mb-5 py-4 px-5 rounded-4 card-profile">
         <div class="row d-flex align-item-center justify-content-center">
           <div class="desc col-lg-6 col-md-12 col-sm-12 p-0 d-flex flex-column justify-content-center align-item-center">
             <h2 class="fw-bold">Hi, Welcome to my Portfolio</h2>
             <p class="detail-desc mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus animi atque voluptas commodi fuga cum consectetur velit assumenda eum recusandae aliquam nisi debitis impedit, vitae iure quisquam placeat! Explicabo sint eligendi alias quos. Quaerat, qui porro, deleniti officiis omnis voluptates quae sit corrupti, nemo minima expedita! Suscipit architecto modi blanditiis dolorem aperiam animi, nesciunt voluptates magni! Saepe, consequatur suscipit nostrum a alias officiis animi, accusamus, ipsum placeat neque tenetur quibusdam!</p>
             <div class="button-desc d-flex align-item-center mt-2 mb-3">  
-              <a href="contact.html" class="btn bg-btn text-white px-3 me-3">Contact</a>
+              <a href="/contact" class="btn bg-btn text-white px-3 me-3">Contact</a>
               <a href="CV (3).pdf" download="../CV (3).pdf" class="download text-decoration-none">Download CV <img class="download-img" src="../assets/svg/download.svg" alt="" width="17"></a>
             </div>
             <div class="social mt-5">
@@ -85,7 +105,16 @@
                   <a href="/project-detail/{{id}}" class="card-title text-decoration-none name-project">
                     <h5 class="fw-bold">{{name}}</h5>
                   </a>
-                  <div class="duration-project">Duration: {{get_project_duration start_date end_date}}</div>
+                  <div class="duration-project">Duration: {{get_project_duration start_date end_date}}
+                    |<span class="fw-bold">
+                      {{#if author}}
+                    {{author}}
+                  {{else}}
+                    Unknown User
+                  {{/if}}
+                    </span>
+                  </div>
+                  
                   <div>
                     {{#each this.technologies}}
                       {{{techIcon this}}}
@@ -94,12 +123,15 @@
                   <div class="card-text mt-3 ">
                     <p class="desc">{{description}}</p> 
                   </div>
+
+                  {{#if ../user}}
                   <div class="button-project d-flex gap-2">
                     <a href="/update-project/{{id}}" class="btn bg-btn rounded-2 text-white px-3">Edit</a>
                     <form method="post" action="/delete-project/{{id}}" style="width:100%">
                       <button type="submit" class="btn bg-btn rounded-2 text-white px-3">Delete Post</button>
                     </form>
                   </div>
+                  {{/if}}
                 </div>
               </div>
             </div>

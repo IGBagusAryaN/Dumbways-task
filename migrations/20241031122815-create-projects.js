@@ -27,13 +27,22 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      author_id: {
+        type: Sequelize.INTEGER,
+        Reference:{
+          model:"users",
+          key: "id"
+        }
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       }
     });
   },
