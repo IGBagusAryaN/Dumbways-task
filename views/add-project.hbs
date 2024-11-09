@@ -18,29 +18,32 @@
             class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarTogglerDemo02"
-            aria-control="navbarTogglerDemo02"
+            data-bs-target="#navbarToggler"
+            aria-control="navbarToggler"
             aria-expanded="false"
             aria-label="Toggle Navigation"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item text-center">
-                <a class="nav-link " aria-current="page" href="/">Home</a>
+                <a class="nav-link" aria-current="page" href="/">Home</a>
               </li>
+
+              {{#if user}}
               <li class="nav-item text-center">
                 <a class="nav-link active "aria-current="page" href="/project">Add Project</a>
               </li>
+              {{/if}}
               <li class="nav-item text-center">
                 <a class="nav-link "aria-current="page" href="/testimonial">Testimonial</a>
               </li>
             </ul>
-           <div class="container-auth ms-auto d-flex justify-content-center align-items-center">
+            <div class="container-auth ms-auto d-flex justify-content-center align-items-center">
                 {{#if user}}
                     <div class="me-3 user">Welcome, {{user.name}}</div>
-                    <form action="/logout" method="POST" class="btn-logout me-3">
+                    <form action="/logout" method="POST" class="btn-logout me-4">
                         <button type="submit" class="btn-logout btn btn-danger btn-sm">Logout</button>
                     </form>
                 {{else}}

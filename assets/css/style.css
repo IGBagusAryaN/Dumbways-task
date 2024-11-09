@@ -1,3 +1,8 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 * {
     font-family: "Poppins", sans-serif;
     margin: 0;
@@ -193,6 +198,12 @@
       margin-bottom: 2px;
       border-radius: 7px ;
     }
+
+    form.btn-logout {
+      /* Selector yang lebih spesifik */
+      margin: 0 !important;
+    }
+  
   }
 
   @media only screen and (min-width: 0px) and (max-width: 768px){
@@ -215,12 +226,11 @@
       margin-bottom: 10px;
     }
 
-  
-
     .btn-nav-res{
       width: 100%;
       border: 1px solid #111727 !important;
       margin: 0 !important;
+      margin-left: 0 !important;
     }
 
     .btn-nav-res:hover{
@@ -236,7 +246,12 @@
       width: 100% !important;
       margin-bottom: 2px;
       border-radius: 7px ;
+      margin-inline: 0 !important;
     }
 
+    form.btn-logout {
+      /* Selector yang lebih spesifik */
+      margin: 0 !important;
+    }
 
     }
