@@ -1,4 +1,14 @@
 {
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "express": "^4.21.1",
@@ -14,9 +24,5 @@
   "devDependencies": {
     "nodemon": "^3.1.7",
     "sequelize-cli": "^6.6.2"
-  },
-  "scripts": {
-  "dev": "nodemon app.js"
-}
-
+  }
 }
