@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const path = require("path");
 require("./src/libs/hbs-helper");
-const config = require("./config/config.json");
+const config = require("./config/config");
 const { QueryTypes, Sequelize } = require("sequelize");
 // const sequelize = new Sequelize(config.development);
 const bcrypt = require('bcrypt');
