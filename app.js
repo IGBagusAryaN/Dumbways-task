@@ -5,15 +5,15 @@ const path = require("path");
 require("./src/libs/hbs-helper");
 const config = require("./config/config");
 const { QueryTypes, Sequelize } = require("sequelize");
-// const sequelize = new Sequelize(config.development);
+const sequelize = new Sequelize(config.development);
 const bcrypt = require('bcrypt');
 const session = require("express-session");
 const flash = require("express-flash");
 const upload = require("./src/middlewares/upload-file");
 
-require("dotenv").config()
-const environment = process.env.NODE_ENV
-const sequelize = new Sequelize(config[environment]);
+// require("dotenv").config()
+// const environment = process.env.NODE_ENV
+// const sequelize = new Sequelize(config[environment]);
 
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./src/views"));
