@@ -17,6 +17,7 @@
     "sequelize-cli": "^6.6.2"
   },
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "postinstall": "sequelize db:migrate"
   }
 }
