@@ -33,16 +33,29 @@ app.use(
       },
     })
 );
-app.use(flash());
 
 // Middleware untuk menampilkan data user di semua view
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
-    res.locals.messages = req.flash();  // Add flash messages to res.locals
+    res.locals.messages = req.flash(); 
     next();
 });
   
-  app.use(flash());
+app.use(flash());
+
+if (environment === "production") {
+    sequelize.authenticate()
+      .then(() => {
+        console.log("Database connected!");
+        return sequelize.sync(); 
+      })
+      .then(() => {
+        console.log("Database synchronized!");
+      })
+      .catch(err => {
+        console.error("Unable to connect to the database:", err);
+      });
+  }
 // Rute yang digunakan
 app.get("/", home);
 app.get("/testimonial", testimonial);
@@ -170,7 +183,7 @@ async function projectPost(req, res) {
         ? technologies.split(',').map(tech => tech.trim())
         : [];
     
-    const { id } = req.session.user; // pastikan user sudah ada sebelum destructuring
+    const { id } = req.session.user; 
     const imagePath = req.file.path;
     const formattedTechnologies = `{${techArray.join(',')}}`;
 
@@ -238,10 +251,10 @@ async function updateProjectPost(req, res) {
         : [];
     const formattedTechnologies = `{${techArray.join(',')}}`;
 
-    // Ambil path gambar jika ada file baru yang diunggah
+  
     const imagePath = req.file ? req.file.path : null;
 
-    // Bangun query update dengan kondisi apakah ada image baru atau tidak
+
     const query = `
         UPDATE public.tb_projects
         SET name = '${title}', 
