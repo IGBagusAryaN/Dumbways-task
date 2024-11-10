@@ -2,18 +2,19 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const path = require("path");
-require("./libs/hbs-helper");
+require("./src/libs/hbs-helper");
 const config = require("./config/config.json");
 const { QueryTypes, Sequelize } = require("sequelize");
 const sequelize = new Sequelize(config.development);
 const bcrypt = require('bcrypt');
 const session = require("express-session");
 const flash = require("express-flash");
-const upload = require("./middlewares/upload-file");
+const upload = require("./src/middlewares/upload-file");
 
 app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "./src/views"));
 
-app.use("/assets", express.static(path.join(__dirname, "./assets")));
+app.use("/assets", express.static(path.join(__dirname, "./src/assets")));
 app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -61,7 +62,7 @@ async function home(req, res) {
     console.log(user);
   
 
-    const query = `SELECT tb_projects.*, tb_users.name AS author FROM tb_projects LEFT JOIN tb_users ON tb_projects.author_id = tb_users.id`;
+    const query = `SELECT public.tb_projects.*, public.tb_users.name AS author FROM public.tb_projects LEFT JOIN public.tb_users ON public.tb_projects.author_id = public.tb_users.id`;
     let projects = await sequelize.query(query, { type: QueryTypes.SELECT });
 
     projects = projects.map((project) => ({
@@ -109,7 +110,7 @@ async function registerPost(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const query = `INSERT INTO tb_users(name, email, password) VALUES('${name}','${email}','${hashedPassword}')`
+    const query = `INSERT INTO public.tb_users(name, email, password) VALUES('${name}','${email}','${hashedPassword}')`
 
     await sequelize.query(query,{type:QueryTypes.INSERT})
 
@@ -120,7 +121,7 @@ async function loginPost(req, res) {
     const { email, password } = req.body;
   
     // verifikasi email
-    const query = `SELECT * FROM tb_users WHERE email='${email}'`;
+    const query = `SELECT * FROM public.tb_users WHERE email='${email}'`;
     const user = await sequelize.query(query, { type: QueryTypes.SELECT });
   
     if (!user.length) {
@@ -170,7 +171,7 @@ async function projectPost(req, res) {
     const formattedTechnologies = `{${techArray.join(',')}}`;
 
     const query = `
-        INSERT INTO tb_projects (name, description, image, technologies, start_date, end_date, author_id) 
+        INSERT INTO public.tb_projects (name, description, image, technologies, start_date, end_date, author_id) 
         VALUES ('${title}', '${desc}', '${imagePath}', '${formattedTechnologies}', '${start_date}', '${end_date}', '${id}')
     `;
     await sequelize.query(query, {
@@ -184,7 +185,7 @@ async function projectPost(req, res) {
 async function projectDelete(req, res) {
     const { id } = req.params;
   
-    const query = `DELETE FROM tb_projects WHERE id=${id}`;
+    const query = `DELETE FROM public.tb_projects WHERE id=${id}`;
     await sequelize.query(query, { type: QueryTypes.DELETE });
   
     res.redirect("/");
@@ -193,7 +194,7 @@ async function projectDelete(req, res) {
 async function projectDetail(req, res) {
     const { id } = req.params;
 
-    const query = `SELECT * FROM tb_projects WHERE id = :id`;
+    const query = `SELECT * FROM public.tb_projects WHERE id = :id`;
     const project = await sequelize.query(query, { 
         type: QueryTypes.SELECT, 
         replacements: { id } 
@@ -210,7 +211,7 @@ async function projectDetail(req, res) {
 async function updateProject(req, res) {
     const { id } = req.params;
     
-    const query = `SELECT * FROM tb_projects WHERE id=${id}`;
+    const query = `SELECT * FROM public.tb_projects WHERE id=${id}`;
     const project = await sequelize.query(query, { type: QueryTypes.SELECT });
 
     if (project.length > 0) {
@@ -238,7 +239,7 @@ async function updateProjectPost(req, res) {
 
     // Bangun query update dengan kondisi apakah ada image baru atau tidak
     const query = `
-        UPDATE tb_projects
+        UPDATE public.tb_projects
         SET name = '${title}', 
             description = '${desc}', 
             ${imagePath ? `image = '${imagePath}',` : ""}
