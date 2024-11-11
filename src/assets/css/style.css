@@ -55,15 +55,14 @@
   }
 
   .desc{
-    /* max-width: 600px; */
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Menampilkan hanya 3 baris */
+    -webkit-line-clamp: 3; 
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: justify;
-     letter-spacing: -0.5px; /* Kurangi jarak antar-kata */
-  line-height: 1.2;
+    letter-spacing: -0.5px; 
+    line-height: 1.2;
   }
 
   .card{

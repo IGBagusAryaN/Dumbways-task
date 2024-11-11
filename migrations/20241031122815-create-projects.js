@@ -22,17 +22,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       technologies: {
-        type: Sequelize.STRING
+        type: Sequelize.ARRAY(Sequelize.STRING) // Menggunakan array string
       },
       image: {
         type: Sequelize.STRING
       },
       author_id: {
         type: Sequelize.INTEGER,
-        Reference:{
-          model:"users",
+        references: {
+          model: "users",
           key: "id"
-        }
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL"
       },
       createdAt: {
         allowNull: false,

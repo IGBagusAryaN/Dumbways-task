@@ -11,10 +11,6 @@ const session = require("express-session");
 const flash = require("express-flash");
 const upload = require("./src/middlewares/upload-file");
 
-// require("dotenv").config()
-// const environment = process.env.NODE_ENV
-// const sequelize = new Sequelize(config[environment]);
-
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./src/views"));
 
@@ -34,28 +30,14 @@ app.use(
     })
 );
 
-// Middleware untuk menampilkan data user di semua view
+app.use(flash());
+
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     res.locals.messages = req.flash(); 
     next();
 });
-  
-app.use(flash());
 
-if (environment === "production") {
-    sequelize.authenticate()
-      .then(() => {
-        console.log("Database connected!");
-        return sequelize.sync(); 
-      })
-      .then(() => {
-        console.log("Database synchronized!");
-      })
-      .catch(err => {
-        console.error("Unable to connect to the database:", err);
-      });
-  }
 // Rute yang digunakan
 app.get("/", home);
 app.get("/testimonial", testimonial);
@@ -76,10 +58,8 @@ app.post("/update-project/:id",upload.single("image"), updateProjectPost);
 // Mengambil data proyek untuk halaman home
 async function home(req, res) {
     const user = req.session.user;
-    console.log(user);
-  
 
-    const query = `SELECT public.tb_projects.*, public.tb_users.name AS author FROM public.tb_projects LEFT JOIN public.tb_users ON public.tb_projects.author_id = public.tb_users.id`;
+    const query = `SELECT tb_projects.*, tb_users.name AS author FROM tb_projects LEFT JOIN tb_users ON tb_projects.author_id = tb_users.id`;
     let projects = await sequelize.query(query, { type: QueryTypes.SELECT });
 
     projects = projects.map((project) => ({
@@ -89,7 +69,7 @@ async function home(req, res) {
 
 
 
-    res.render("index", { projects, user });
+    res.render("index", { projects, user,  messages: res.locals.messages });
 }
 
 
@@ -114,7 +94,7 @@ function project(req, res) {
 }
 
 function login(req, res) {
-    res.render("login");
+    res.render("login", { messages: res.locals.messages });
 }
 
 function register(req, res) {
@@ -127,7 +107,7 @@ async function registerPost(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const query = `INSERT INTO public.tb_users(name, email, password) VALUES('${name}','${email}','${hashedPassword}')`
+    const query = `INSERT INTO tb_users(name, email, password) VALUES('${name}','${email}','${hashedPassword}')`
 
     await sequelize.query(query,{type:QueryTypes.INSERT})
 
@@ -137,8 +117,8 @@ async function registerPost(req, res) {
 async function loginPost(req, res) {
     const { email, password } = req.body;
   
-    // verifikasi email
-    const query = `SELECT * FROM public.tb_users WHERE email='${email}'`;
+
+    const query = `SELECT * FROM tb_users WHERE email='${email}'`;
     const user = await sequelize.query(query, { type: QueryTypes.SELECT });
   
     if (!user.length) {
@@ -188,7 +168,7 @@ async function projectPost(req, res) {
     const formattedTechnologies = `{${techArray.join(',')}}`;
 
     const query = `
-        INSERT INTO public.tb_projects (name, description, image, technologies, start_date, end_date, author_id) 
+        INSERT INTO tb_projects (name, description, image, technologies, start_date, end_date, author_id) 
         VALUES ('${title}', '${desc}', '${imagePath}', '${formattedTechnologies}', '${start_date}', '${end_date}', '${id}')
     `;
     await sequelize.query(query, {
@@ -202,7 +182,7 @@ async function projectPost(req, res) {
 async function projectDelete(req, res) {
     const { id } = req.params;
   
-    const query = `DELETE FROM public.tb_projects WHERE id=${id}`;
+    const query = `DELETE FROM tb_projects WHERE id=${id}`;
     await sequelize.query(query, { type: QueryTypes.DELETE });
   
     res.redirect("/");
@@ -211,7 +191,7 @@ async function projectDelete(req, res) {
 async function projectDetail(req, res) {
     const { id } = req.params;
 
-    const query = `SELECT * FROM public.tb_projects WHERE id = :id`;
+    const query = `SELECT * FROM tb_projects WHERE id = :id`;
     const project = await sequelize.query(query, { 
         type: QueryTypes.SELECT, 
         replacements: { id } 
@@ -228,7 +208,7 @@ async function projectDetail(req, res) {
 async function updateProject(req, res) {
     const { id } = req.params;
     
-    const query = `SELECT * FROM public.tb_projects WHERE id=${id}`;
+    const query = `SELECT * FROM tb_projects WHERE id=${id}`;
     const project = await sequelize.query(query, { type: QueryTypes.SELECT });
 
     if (project.length > 0) {
@@ -256,7 +236,7 @@ async function updateProjectPost(req, res) {
 
 
     const query = `
-        UPDATE public.tb_projects
+        UPDATE tb_projects
         SET name = '${title}', 
             description = '${desc}', 
             ${imagePath ? `image = '${imagePath}',` : ""}
