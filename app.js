@@ -21,6 +21,7 @@ app.set("views", path.join(__dirname, "./src/views"));
 app.use("/assets", express.static(path.join(__dirname, "./src/assets")));
 app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 app.use(express.urlencoded({ extended: true }));
+
 app.use(
     session({
       name: "my-session",
@@ -28,14 +29,21 @@ app.use(
       resave: false,
       saveUninitialized: true,
       cookie: {
-        secure: false,
+        secure: environment === 'production',
         maxAge: 1000 * 60 * 60 * 24, // 1 hari
       },
     })
-);
+  );
 
+  
 app.use(flash());
-
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection to the database has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     res.locals.messages = req.flash(); 
