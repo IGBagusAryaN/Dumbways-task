@@ -7,7 +7,6 @@ console.log({
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
   host: process.env.DB_HOST || process.env.POSTGRES_HOST,
-
 });
 
 module.exports = {
@@ -19,11 +18,10 @@ module.exports = {
     dialect: "postgres",
     dialectModule: pg,
     dialectOptions: {
-      ssl: false,
-      // {
-      //   require: true,
-      //   rejectUnauthorized: false,
-      // },
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
     },
   },
   production: {
