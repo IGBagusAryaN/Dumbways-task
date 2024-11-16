@@ -1,22 +1,12 @@
 require("dotenv").config();
 const pg = require("pg");
 
-
-console.log({
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DATABASE,
-  host: process.env.POSTGRES_HOST || process.env.POSTGRES_HOST,
-  port: process.env.POSTGRES_PORT
-});
-
 module.exports = {
   development: {
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
     host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
     dialect: "postgres",
     dialectModule: pg,
     dialectOptions: {
@@ -31,7 +21,6 @@ module.exports = {
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
     host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
     dialect: "postgres",
     dialectModule: pg,
     dialectOptions: {
