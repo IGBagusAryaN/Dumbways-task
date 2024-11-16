@@ -43,22 +43,20 @@ app.get("/", home);
 app.get("/testimonial", testimonial);
 app.get("/contact", contact);
 app.get("/project", project);
-app.get("/login", login)
-app.post("/login", loginPost)
+app.get("/login", login);
+app.post("/login", loginPost);
 app.post("/logout", logoutPost);
-app.get("/register", register)
-app.post("/register", registerPost)
-app.post("/project",upload.single("image"), projectPost);
+app.get("/register", register);
+app.post("/register", registerPost);
+app.post("/project", upload.single("image"), projectPost);
 app.post("/delete-project/:id", projectDelete);
 app.get("/project-detail/:id", projectDetail);
 app.get("/update-project/:id", updateProject);
-app.post("/update-project/:id",upload.single("image"), updateProjectPost);
-
+app.post("/update-project/:id", upload.single("image"), updateProjectPost);
 
 // Mengambil data proyek untuk halaman home
 async function home(req, res) {
     const user = req.session.user;
-
     const query = `SELECT tb_projects.*, tb_users.name AS author FROM tb_projects LEFT JOIN tb_users ON tb_projects.author_id = tb_users.id`;
     let projects = await sequelize.query(query, { type: QueryTypes.SELECT });
 
@@ -67,11 +65,8 @@ async function home(req, res) {
         technologies: project.technologies,
     }));
 
-
-
-    res.render("index", { projects, user,  messages: res.locals.messages });
+    res.render("index", { projects, user, messages: res.locals.messages });
 }
-
 
 function testimonial(req, res) {
     res.render("testimonial");
@@ -82,15 +77,13 @@ function contact(req, res) {
 }
 
 function project(req, res) {
-
     const user = req.session.user;
 
-    if(!user){
+    if (!user) {
         return res.redirect("/login");
     }
 
-
-    res.render("add-project");
+    res.render("add-project", { messages: res.locals.messages });
 }
 
 function login(req, res) {
@@ -98,59 +91,55 @@ function login(req, res) {
 }
 
 function register(req, res) {
-    res.render("register");
+    res.render("register", { messages: res.locals.messages });
 }
 
 async function registerPost(req, res) {
-    const {name, email, password} = req.body;
-    const salt = 10
+    const { name, email, password } = req.body;
+    const salt = 10;
 
-    const hashedPassword = await bcrypt.hash(password, salt)
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const query = `INSERT INTO tb_users(name, email, password) VALUES('${name}','${email}','${hashedPassword}')`
+    const query = `INSERT INTO tb_users(name, email, password) VALUES('${name}', '${email}', '${hashedPassword}')`;
+    await sequelize.query(query, { type: QueryTypes.INSERT });
 
-    await sequelize.query(query,{type:QueryTypes.INSERT})
-
-    res.redirect("/login")
+    req.flash("success", "Registrasi berhasil. Silakan login.");
+    res.redirect("/login");
 }
 
 async function loginPost(req, res) {
     const { email, password } = req.body;
-  
 
     const query = `SELECT * FROM tb_users WHERE email='${email}'`;
     const user = await sequelize.query(query, { type: QueryTypes.SELECT });
-  
+
     if (!user.length) {
-      req.flash("error", "Email / password salah!");
-      return res.redirect("/login");
+        req.flash("error", "Email atau password salah!");
+        return res.redirect("/login");
     }
-  
+
     const isVerifiedPassword = await bcrypt.compare(password, user[0].password);
-  
+
     if (!isVerifiedPassword) {
-      req.flash("error", "Email / password salah!");
-      return res.redirect("/login");
+        req.flash("error", "Email atau password salah!");
+        return res.redirect("/login");
     }
-  
+
     req.flash("success", "Berhasil login!");
     req.session.user = user[0];
     res.redirect("/");
-  }
+}
 
-  function logoutPost(req, res) {
+function logoutPost(req, res) {
     req.session.destroy((err) => {
-      if (err) return console.error("Logout gagal!");
-  
-      console.log("Logout berhasil!");
-  
-      res.redirect("/");
+        if (err) return console.error("Logout gagal!");
+
+        console.log("Logout berhasil!");
+        res.redirect("/");
     });
-  }
-  
+}
 
 async function projectPost(req, res) { 
-    // Cek apakah user sudah login
     if (!req.session.user) {
         req.flash("error", "Anda harus login terlebih dahulu!");
         return res.redirect("/login");
@@ -164,6 +153,22 @@ async function projectPost(req, res) {
         : [];
     
     const { id } = req.session.user; 
+
+    // Validasi Field Kosong
+    const errors = [];
+    if (!title) errors.push("Please enter a project name.");
+    else if (!start_date) errors.push("Please enter start date");
+    else if (!end_date) errors.push("Please enter end date");
+    else if (!desc) errors.push("Please enter a project description");
+    else if (techArray.length === 0) errors.push("Please enter the technology used");
+    else if (!req.file) errors.push("Please upload project images");
+
+    // Jika ada error, kirim peringatan dan kembali ke form
+    if (errors.length > 0) {
+        req.flash("erroraddproject", errors); // Kirimkan array errors ke flash
+        return res.redirect("/project");
+    }
+
     const imagePath = req.file.path;
     const formattedTechnologies = `{${techArray.join(',')}}`;
 
@@ -171,6 +176,7 @@ async function projectPost(req, res) {
         INSERT INTO tb_projects (name, description, image, technologies, start_date, end_date, author_id) 
         VALUES ('${title}', '${desc}', '${imagePath}', '${formattedTechnologies}', '${start_date}', '${end_date}', '${id}')
     `;
+    
     await sequelize.query(query, {
         type: QueryTypes.INSERT
     });
@@ -179,12 +185,14 @@ async function projectPost(req, res) {
 }
 
 
+
 async function projectDelete(req, res) {
     const { id } = req.params;
   
     const query = `DELETE FROM tb_projects WHERE id=${id}`;
     await sequelize.query(query, { type: QueryTypes.DELETE });
   
+    req.flash("success", "Proyek berhasil dihapus.");
     res.redirect("/");
 }
 
@@ -207,13 +215,17 @@ async function projectDetail(req, res) {
 
 async function updateProject(req, res) {
     const { id } = req.params;
-    
-    const query = `SELECT * FROM tb_projects WHERE id=${id}`;
-    const project = await sequelize.query(query, { type: QueryTypes.SELECT });
+
+    // Ambil data project berdasarkan id
+    const projectQuery = `SELECT * FROM tb_heros WHERE id=${id}`;
+    const project = await sequelize.query(projectQuery, { type: QueryTypes.SELECT });
+
+    // Ambil semua data types untuk ditampilkan di dropdown
+    const typesQuery = `SELECT * FROM tb_types`;
+    const types = await sequelize.query(typesQuery, { type: QueryTypes.SELECT });
 
     if (project.length > 0) {
-        project[0].author = "Bagus Arya";
-        res.render("update-project", { project: project[0] });
+        res.render("edit-char", { project: project[0], types });
     } else {
         res.redirect("/");
     }
@@ -223,7 +235,6 @@ async function updateProjectPost(req, res) {
     const { id } = req.params;
     const { title, desc, technologies, start_date, end_date } = req.body;
     
-    // Format technologies ke dalam format array PostgreSQL
     const techArray = Array.isArray(technologies)
         ? technologies
         : typeof technologies === "string"
@@ -231,9 +242,7 @@ async function updateProjectPost(req, res) {
         : [];
     const formattedTechnologies = `{${techArray.join(',')}}`;
 
-  
     const imagePath = req.file ? req.file.path : null;
-
 
     const query = `
         UPDATE tb_projects
@@ -242,16 +251,15 @@ async function updateProjectPost(req, res) {
             ${imagePath ? `image = '${imagePath}',` : ""}
             technologies = '${formattedTechnologies}', 
             start_date = '${start_date}', 
-            end_date = '${end_date}'
-        WHERE id = '${id}'
+            end_date = '${end_date}' WHERE id = '${id}'
     `;
 
     await sequelize.query(query, {
         type: QueryTypes.UPDATE
     });
+    req.flash("success", "Proyek berhasil diperbarui.");
     res.redirect("/");
 }
-
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

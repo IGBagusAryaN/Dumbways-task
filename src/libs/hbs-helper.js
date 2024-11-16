@@ -1,5 +1,6 @@
 // helpers.js
 const hbs = require("hbs");
+const handlebars = require("handlebars");
 
 hbs.registerHelper("get_project_duration", (start, end) => {
   if (!start || !end) return "Tanggal tidak valid";
@@ -30,6 +31,13 @@ hbs.registerHelper('techIcon', function (techName) {
       javascript: '<img class="img-icon" src="../assets/svg/javascript.svg"width="22">',
   };
   return new hbs.SafeString(icons[techName] || "");
+});
+
+hbs.registerHelper("json", function(context) {
+  return JSON.stringify(context);
+});
+hbs.registerHelper("encodeURIComponent", function(context) {
+  return encodeURIComponent(context);
 });
 
 module.exports = hbs;
