@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -64,27 +65,19 @@
             <div class="container-form mt-5">
                 <form action="/login" method="post">
                     <h2 class="mb-4 text-center fw-bold">LOGIN</h2>
-                    {{#if messages.error}}
+                    {{!-- {{#if messages.error}}
                       <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         {{messages.error}}
                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>
-                    {{/if}}
+                    {{/if}} --}}
                     <div class="mb-2 ">
                         <label for="input-email" class="form-label fw-bold">Email</label>
                         <input name="email" type="email" class="form-control" id="input-email" placeholder="email" required>
                     </div>
                     <div class="mb-3 ">
-                        <div class="password-container">
-                           <label for="input-password" class="form-label fw-bold">Password</label>
-                            <input type="password" id="input-password" placeholder="Enter your password" class="form-control" autocomplete="current-password"/>
-                            <span id="togglePassword" class="password-toggle">
-                                <!-- Tambahkan ikon mata di sini, bisa dalam bentuk <img> atau <svg> -->
-                                <img src="../assets/png/openeye.png" id="closedEyeIcon" width="24" height="24" style="display: inline;">
-                                <img src="../assets/png/closedeye.png" id="openEyeIcon" width="24" height="24" style="display: none;">
-                            </span>
-                        </div>
-
+                        <label for="input-password" class="form-label fw-bold">Password</label>
+                        <input name="password" type="password" class="form-control" id="input-password" placeholder="password" required>
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <button class="btn bg-btn text-white">Login</button>
@@ -93,27 +86,31 @@
               </div>
           </div>
     </body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const passwordInput = document.getElementById("input-password");
-    const togglePassword = document.getElementById("togglePassword");
-    const closedEyeIcon = document.getElementById("closedEyeIcon");
-    const openEyeIcon = document.getElementById("openEyeIcon");
+  document.addEventListener("DOMContentLoaded", function () {
+    {{#if messages.error}}
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '{{messages.error}}',
+        confirmButtonColor: '#d33',
+      });
+    {{/if}}
 
-    togglePassword.addEventListener("click", function () {
-        // Toggle input type antara password dan text
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            closedEyeIcon.style.display = "none"; // Sembunyikan ikon mata tertutup
-            openEyeIcon.style.display = "inline"; // Tampilkan ikon mata terbuka
-        } else {
-            passwordInput.type = "password";
-            closedEyeIcon.style.display = "inline"; // Tampilkan ikon mata tertutup
-            openEyeIcon.style.display = "none"; // Sembunyikan ikon mata terbuka
-        }
-    });
-});
-
+    {{#if messages.success}}
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: '{{messages.success}}',
+        confirmButtonColor: '#3085d6',
+      });
+    {{/if}}
+  });
 </script>
+
 </html>

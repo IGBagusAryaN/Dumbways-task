@@ -35,6 +35,7 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     res.locals.messages = req.flash(); 
+    console.log("Messages Middleware:", res.locals.messages); // Debugging
     next();
 });
 
@@ -126,20 +127,20 @@ async function loginPost(req, res) {
     }
 
     req.flash("success", "Berhasil login!");
+    console.log("Success Flash:", req.flash("success")); // Debug: Pastikan pesan sukses ada
     req.session.user = user[0];
     res.redirect("/");
+    
 }
 
 function logoutPost(req, res) {
     req.session.destroy((err) => {
         if (err) return console.error("Logout gagal!");
-
-        console.log("Logout berhasil!");
         res.redirect("/");
     });
 }
 
-async function projectPost(req, res) { 
+async function projectPost(req, res) {
     if (!req.session.user) {
         req.flash("error", "Anda harus login terlebih dahulu!");
         return res.redirect("/login");
@@ -149,39 +150,57 @@ async function projectPost(req, res) {
     const techArray = Array.isArray(technologies)
         ? technologies
         : typeof technologies === "string"
-        ? technologies.split(',').map(tech => tech.trim())
+        ? technologies.split(",").map((tech) => tech.trim())
         : [];
-    
-    const { id } = req.session.user; 
+
+    const { id } = req.session.user;
+    const errors = [];
 
     // Validasi Field Kosong
-    const errors = [];
     if (!title) errors.push("Please enter a project name.");
-    else if (!start_date) errors.push("Please enter start date");
-    else if (!end_date) errors.push("Please enter end date");
-    else if (!desc) errors.push("Please enter a project description");
-    else if (techArray.length === 0) errors.push("Please enter the technology used");
-    else if (!req.file) errors.push("Please upload project images");
+    if (!start_date) errors.push("Please enter the start date.");
+    if (!end_date) errors.push("Please enter the end date.");
+    if (!desc) errors.push("Please enter a project description.");
+    if (techArray.length === 0) errors.push("Please select at least one technology.");
+    if (!req.file) errors.push("Please upload a project image.");
 
-    // Jika ada error, kirim peringatan dan kembali ke form
+    // Jika ada error, kirim error dan data lama ke form
     if (errors.length > 0) {
         req.flash("erroraddproject", errors); // Kirimkan array errors ke flash
+        req.flash("oldData", { title, desc, technologies: techArray, start_date, end_date }); // Kirimkan data yang sudah diisi
         return res.redirect("/project");
     }
 
-    const imagePath = req.file.path;
-    const formattedTechnologies = `{${techArray.join(',')}}`;
+    try {
+        const imagePath = req.file.path;
+        const formattedTechnologies = `{${techArray.join(",")}}`;
 
-    const query = `
-        INSERT INTO tb_projects (name, description, image, technologies, start_date, end_date, author_id) 
-        VALUES ('${title}', '${desc}', '${imagePath}', '${formattedTechnologies}', '${start_date}', '${end_date}', '${id}')
-    `;
-    
-    await sequelize.query(query, {
-        type: QueryTypes.INSERT
-    });
-    
-    res.redirect("/");
+        // Gunakan parameterized query untuk keamanan
+        const query = `
+            INSERT INTO tb_projects (name, description, image, technologies, start_date, end_date, author_id) 
+            VALUES (:title, :desc, :imagePath, :technologies, :start_date, :end_date, :author_id)
+        `;
+
+        await sequelize.query(query, {
+            replacements: {
+                title,
+                desc,
+                imagePath,
+                technologies: formattedTechnologies,
+                start_date,
+                end_date,
+                author_id: id,
+            },
+            type: QueryTypes.INSERT,
+        });
+
+        req.flash("success", "Project added successfully!");
+        return res.redirect("/");
+    } catch (error) {
+        console.error("Database Error:", error);
+        req.flash("error", "An unexpected error occurred. Please try again.");
+        return res.redirect("/project");
+    }
 }
 
 

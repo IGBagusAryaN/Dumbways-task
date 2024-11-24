@@ -58,18 +58,18 @@
           </div>
         </div>
       </nav>
- {{#if messages.erroraddproject}}
-    <script>
-        const error = "{{messages.erroraddproject.[0]}}"; // Mengambil pesan error pertama
-        Swal.fire({
-            title: "Oops...",
-            html: `<p>${error}</p>`,
-            icon: "error",
-            confirmButtonText: "Okay",
-            confirmButtonColor: "#5353ec"
-        });
-    </script>
-{{/if}}
+      {{#if messages.erroraddproject}}
+          <script>
+              const error = "{{messages.erroraddproject.[0]}}"; // Mengambil pesan error pertama
+              Swal.fire({
+                  title: "Oops...",
+                  html: `<p>${error}</p>`,
+                  icon: "error",
+                  confirmButtonText: "Okay",
+                  confirmButtonColor: "#5353ec"
+              });
+          </script>
+      {{/if}}
 
 
       <div class="container-fluid d-flex justify-content-center align-item-center bg-form">

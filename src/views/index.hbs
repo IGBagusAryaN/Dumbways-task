@@ -43,9 +43,10 @@
             <div class="container-auth ms-auto d-flex justify-content-center align-items-center">
                 {{#if user}}
                     <div class="me-3 user">Welcome, {{user.name}}</div>
-                    <form action="/logout" method="POST" class="btn-logout me-4">
-                        <button type="submit" class="btn-logout btn btn-danger btn-sm">Logout</button>
-                    </form>
+                    <form id="logoutForm" action="/logout" method="POST" class="btn-logout me-4">
+    <button type="button" id="logoutButton" class="btn btn-danger btn-sm">Logout</button>
+</form>
+
                 {{else}}
                     <div class="login-register-links">
                         <a href="/login" class="btn-nav-res btn text-decoration-none text-dark">Login</a>
@@ -57,13 +58,13 @@
           </div>
         </div>
       </nav>
-      
+{{!--       
       {{#if messages.success}}
       <div class="alert alert-success alert-dismissible fade show" role="alert" style="top:60px; z-index:99;">
         {{messages.success}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      {{/if}}
+      {{/if}} --}}
   
       <section class="container mb-5 py-4 px-5 rounded-4 card-profile">
         <div class="row d-flex align-item-center justify-content-center">
@@ -127,8 +128,8 @@
                   {{#if ../user}}
                   <div class="button-project d-flex gap-2">
                     <a href="/update-project/{{id}}" class="btn bg-btn rounded-2 text-white px-3">Edit</a>
-                   <form id="delete-form" method="post" action="/delete-project/{{id}}" style="width:100%">
-                      <button type="button" id="delete-btn" class="btn bg-btn rounded-2 text-white px-3">Delete</button>
+                   <form class="delete-form" method="post" action="/delete-project/{{id}}" data-id="{{id}}" style="width:100%">
+                      <button type="button" class="btn bg-btn rounded-2 text-white px-3 delete-btn">Delete</button>
                   </form>
 
                   </div>
@@ -143,24 +144,74 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.getElementById("delete-btn").addEventListener("click", function (event) {
-        event.preventDefault(); // Mencegah submit form langsung
+    <script>
+    // Memastikan flash message tampil jika ada
+    const successMessage = "{{messages.success}}";
+    const errorMessage = "{{messages.error}}";
 
+    if (successMessage) {
+        Swal.fire({
+            title: "Success!",
+            text: successMessage,
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "OK",
+        });
+    } else if (errorMessage) {
+        Swal.fire({
+            title: "Error!",
+            text: errorMessage,
+            icon: "error",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "OK",
+        });
+    }
+</script>
+<script>
+    document.getElementById("logoutButton").addEventListener("click", function () {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out of your account.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, logout!",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim form logout jika user mengkonfirmasi
+                document.getElementById("logoutForm").submit();
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+   document.querySelectorAll(".delete-btn").forEach((button) => {
+    button.addEventListener("click", function (event) {
+        event.preventDefault(); // Mencegah submit form langsung
+        
+        const form = this.closest(".delete-form"); // Ambil form terkait tombol ini
+        
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                document.getElementById("delete-form").submit(); // Submit form jika dikonfirmasi
+                form.submit(); // Submit form jika dikonfirmasi
             }
         });
     });
+});
+
 </script>
 </body>
 </html>
