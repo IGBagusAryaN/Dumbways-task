@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const session = require("express-session");
 const flash = require("express-flash");
 const upload = require("./src/middlewares/upload-file");
+const pgSession = require('connect-pg-simple')(session);
 
 require("dotenv").config()
 const environment = process.env.NODE_ENV
@@ -21,6 +22,21 @@ app.set("views", path.join(__dirname, "./src/views"));
 app.use("/assets", express.static(path.join(__dirname, "./src/assets")));
 app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+    session({
+      store: new pgSession({
+        conString: process.env.DATABASE_URL
+      }),
+      secret: 'your-secret-key',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 // 1 hour
+      }
+    })
+  );
 
 app.use(
     session({
